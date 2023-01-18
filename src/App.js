@@ -10,6 +10,7 @@ import UpdateCategory from "./components/Categories/UpdateCategory";
 import UserProtectedRoute from "./components/Navigation/ProtectedRoutes/UserProtectedRoute";
 import AdminProtectedRoute from "./components/Navigation/ProtectedRoutes/AdminProtectedRoute";
 import CreatePost from "./components/Posts/CreatePost";
+import PostsList from "./components/Posts/PostsList";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route exact path="/" element={<HomePage />} />
           <Route exact path="/register" element={<Register />} />
           <Route exact path="/login" element={<Login />} />
+          <Route exact path="/posts" element={<PostsList />} />
 
           <Route element={<AdminProtectedRoute />}>
             {/* <Route path="/admin-dashboard" element={<AdminDashboard />} /> */}
