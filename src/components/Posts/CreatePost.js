@@ -1,13 +1,33 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
 import { createpostAction } from "../../redux/slices/posts/postSlices";
-
+import CategoryDropDown from "../Categories/CategoryDropDown";
+import Dropzone from 'react-dropzone'
 //Form schema
 const formSchema = Yup.object({
   title: Yup.string().required("Title is required"),
   description: Yup.string().required("Description is required"),
+  category: Yup.object().required("Category is required"),
+  image: Yup.object().required("Image is required"),
 });
+
+//css for dropzone
+const Container = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-width: 2px;
+  border-radius: 2px;
+  border-style: dashed;
+  background-color: #fafafa;
+  color: #bdbdbd;
+border-color:'red'
+  transition: border 0.24s ease-in-out;
+`;
 
 export default function CreatePost() {
   const dispatch = useDispatch();
@@ -15,11 +35,20 @@ export default function CreatePost() {
   const formik = useFormik({
     initialValues: {
       title: "",
-      Description: "",
+      description: "",
+      category: "",
+      image:"",
     },
     onSubmit: values => {
       //dispath the action
-      dispatch(createpostAction(values));
+      console.log(values);
+      const data = {
+        category: values?.category?.label,
+        title: values?.title,
+        description: values?.description,
+        image: values?.image,
+      };
+      dispatch(createpostAction(data));
     },
     validationSchema: formSchema,
   });
@@ -63,9 +92,18 @@ export default function CreatePost() {
                   />
                 </div>
                 {/* Err msg */}
-                <div className="text-red-500">{formik?.touched?.title}</div>
+                <div className="text-red-500">
+                  {formik?.touched?.title && formik?.errors?.title}
+                </div>
               </div>
-              Category input goes here
+              {/* Category input goes here */}
+              <CategoryDropDown
+                value={formik.values.category?.label}
+                onChange={formik.setFieldValue}
+                onBlur={formik.setFieldTouched}
+                error={formik.errors.category}
+                touched={formik.touched.category}
+              />
               <div>
                 <label
                   htmlFor="password"
@@ -83,9 +121,37 @@ export default function CreatePost() {
                   className="rounded-lg appearance-none block w-full py-3 px-3 text-base text-center leading-tight text-gray-600 bg-transparent focus:bg-transparent  border border-gray-200 focus:border-gray-500  focus:outline-none"
                   type="text"
                 ></textarea>
+
+           {/* image component */}
+           <Container className="container bg-gray-700">
+                  <Dropzone
+                    onBlur={formik.handleBlur("image")}
+                    accept="image/jpeg, image/png image/webp"
+                    onDrop={(acceptedFiles) => {
+                      formik.setFieldValue("image", acceptedFiles[0]);
+                    }}
+                  >
+                    {({ getRootProps, getInputProps }) => (
+                      <div className="container">
+                        <div
+                          {...getRootProps({
+                            className: "dropzone",
+                            onDrop: (event) => event.stopPropagation(),
+                          })}
+                        >
+                          <input {...getInputProps()} />
+                          <p className="text-gray-300 text-lg cursor-pointer hover:text-gray-500">
+                            Click here to select image
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                  </Dropzone>
+                </Container>
+                
                 {/* Err msg */}
                 <div className="text-red-500">
-                  {formik?.touched?.description}
+                  {formik?.touched?.description && formik.errors?.description}
                 </div>
               </div>
               <div>
