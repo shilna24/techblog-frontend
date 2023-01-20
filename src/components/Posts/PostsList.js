@@ -2,21 +2,39 @@ import { useEffect } from "react";
 import { ThumbUpIcon, ThumbDownIcon, EyeIcon } from "@heroicons/react/solid";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { fetchPostsAction } from "../../redux/slices/posts/postSlices";
+import {
+  fetchPostsAction,
+  toggleAddLikesToPost,
+  toggleAddDisLikesToPost,
+} from "../../redux/slices/posts/postSlices";
 import DateFormatter from "../../utils/DateFormatter";
+import { fetchCategoriesAction } from "../../redux/slices/category/categorySlice";
+import LoadingComponent from "../../utils/LoadingComponent";
 
 export default function PostsList() {
-  //dispatch
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchPostsAction());
-  }, [dispatch]);
-
   //select post from store
   const post = useSelector(state => state?.post);
+  const { postLists, loading, appErr, serverErr, likes, dislikes } = post;
+  console.log(post);
+  //select categories from store
+  const category = useSelector(state => state?.category);
+  const {
+    categoryList,
+    loading: catLoading,
+    appErr: catAppErr,
+    serverErr: catServerErr,
+  } = category;
+  //dispatch
+  const dispatch = useDispatch();
+  //fetch post
+  useEffect(() => {
+    dispatch(fetchPostsAction(""));
+  }, [dispatch, likes, dislikes]);
+  //fetch categories
+  useEffect(() => {
+    dispatch(fetchCategoriesAction());
+  }, [dispatch]);
 
-  const { postLists, loading, appErr, serverErr } = post;
-  console.log(postLists);
   return (
     <>
       <section>
@@ -33,7 +51,10 @@ export default function PostsList() {
               </div>
               <div class=" block text-right w-1/2">
                 {/* View All */}
-                <button class="inline-block py-2 px-6 rounded-l-xl rounded-t-xl bg-green-600 hover:bg-green-700 text-gray-50 font-bold leading-loose transition duration-200">
+                <button
+                  onClick={() => dispatch(fetchPostsAction(""))}
+                  class="inline-block py-2 px-6 rounded-l-xl rounded-t-xl bg-green-600 hover:bg-green-700 text-gray-50 font-bold leading-loose transition duration-200"
+                >
                   View All Posts
                 </button>
               </div>
@@ -45,36 +66,46 @@ export default function PostsList() {
                     Categories
                   </h4>
                   <ul>
-                    <div>Loading</div>
-
-                    <div className="text-red-400 text-base">
-                      Categories Error goes here
-                    </div>
-
-                    <div className="text-xl text-gray-100 text-center">
-                      No category
-                    </div>
-
-                    <li>
-                      <p className="block cursor-pointer py-2 px-3 mb-4 rounded text-yellow-500 font-bold bg-gray-500">
-                        {/* {category?.title} */} category List
-                      </p>
-                    </li>
+                    {catLoading ? (
+                      <LoadingComponent />
+                    ) : catAppErr || catServerErr ? (
+                      <h1>
+                        {catServerErr} {catAppErr}
+                      </h1>
+                    ) : categoryList?.length <= 0 ? (
+                      <h1 className="text-yellow-400 text-lg text-center">No Category Found</h1>
+                    ) : (
+                      categoryList?.map(category => (
+                        <li>
+                          <p
+                            onClick={() =>
+                              dispatch(fetchPostsAction(category?.title))
+                            }
+                            className="block cursor-pointer py-2 px-3 mb-4 rounded text-yellow-500 font-bold bg-gray-500"
+                          >
+                            {category?.title}
+                          </p>
+                        </li>
+                      ))
+                    )}
                   </ul>
                 </div>
               </div>
               <div class="w-full lg:w-3/4 px-3">
                 {/* Post goes here */}
 
-                {loading ? (
-                  <h1>Loading...</h1>
-                ) : appErr || serverErr ? (
-                  <h1>Err</h1>
-                ) : postLists?.lenght <= 0 ? (
-                  <h1>No Post Found</h1>
+                {appErr || serverErr ? (
+                  <h1>
+                    {serverErr} {appErr}
+                  </h1>
+                ) : postLists?.length <= 0 ? (
+                  <h1 className="text-yellow-400 text-lg text-center">No Post Found</h1>
                 ) : (
                   postLists?.map(post => (
-                    <div class="flex flex-wrap bg-gray-900 -mx-3  lg:mb-6">
+                    <div
+                      key={post.id}
+                      className="flex flex-wrap bg-gray-900 -mx-3  lg:mb-6"
+                    >
                       <div class="mb-10  w-full lg:w-1/4 px-3">
                         <Link>
                           {/* Post image */}
@@ -88,23 +119,31 @@ export default function PostsList() {
                         <div className="flex flex-row bg-gray-300 justify-center w-full  items-center ">
                           {/* Likes */}
                           <div className="flex flex-row justify-center items-center ml-4 mr-4 pb-2 pt-1">
-                            {/* Togle like  */}
+                            {/* Toggle like  */}
                             <div className="">
-                              <ThumbUpIcon className="h-7 w-7 text-indigo-600 cursor-pointer" />
+                              <ThumbUpIcon
+                                onClick={() =>
+                                  dispatch(toggleAddLikesToPost(post?._id))
+                                }
+                                className="h-7 w-7 text-indigo-600 cursor-pointer"
+                              />
                             </div>
                             <div className="pl-2 text-gray-600">
-                              {post?.likes?.lenght ? post?.likes?.length : 0}
+                              {post?.likes?.length}
                             </div>
                           </div>
                           {/* Dislike */}
                           <div className="flex flex-row  justify-center items-center ml-4 mr-4 pb-2 pt-1">
                             <div>
-                              <ThumbDownIcon className="h-7 w-7 cursor-pointer text-gray-600" />
+                              <ThumbDownIcon
+                                onClick={() =>
+                                  dispatch(toggleAddDisLikesToPost(post?._id))
+                                }
+                                className="h-7 w-7 cursor-pointer text-gray-600"
+                              />
                             </div>
                             <div className="pl-2 text-gray-600">
-                              {post?.disLikes?.length
-                                ? post?.disLikes?.length
-                                : 0}
+                              {post?.disLikes?.length}
                             </div>
                           </div>
                           {/* Views */}
@@ -127,7 +166,10 @@ export default function PostsList() {
                         </Link>
                         <p class="text-gray-300">{post?.description}</p>
                         {/* Read more */}
-                        <Link className="text-indigo-500 hover:underline">
+                        <Link
+                          to={`/posts/${post?._id}`}
+                          className="text-indigo-500 hover:underline"
+                        >
                           Read More..
                         </Link>
                         {/* User Avatar */}
