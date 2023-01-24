@@ -22,13 +22,16 @@ export default function UpdatePost(props) {
     useEffect(()=>{
 dispatch(fetchPostDetailsAction(id))
     },[id, dispatch])
-//select post
+
+    //select post
 const postData=useSelector(state=>state?.post)
 const {postDetails}=postData
+
 //select updated post from store
 const postUpdate=useSelector(state=>state.post)
 const {loading,appErr,serverErr,isUpdated}=postUpdate
-    //formik
+   
+//formik
   const formik = useFormik({
     enableReinitialize:true,
     initialValues:{

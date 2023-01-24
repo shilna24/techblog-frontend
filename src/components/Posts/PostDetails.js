@@ -9,24 +9,29 @@ import { useDispatch, useSelector } from "react-redux";
 import DateFormatter from "../../utils/DateFormatter";
 import LoadingComponent from "../../utils/LoadingComponent";
 import AddComment from "../Comments/AddComment";
+import CommentsList from "../Comments/CommentList";
+
+
 
 const PostDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchPostDetailsAction(id));
-  }, [id, dispatch]);
-
   //select post details from store
   const post = useSelector((state) => state?.post);
   const { postDetails, loading, appErr, serverErr, isDeleted } = post;
-console.log(postDetails.comments)
+  //comment
+  const comment =useSelector(state=> state.comment)
+  const {commentCreated,commentDeleted} = comment;
+  useEffect(() => {
+    dispatch(fetchPostDetailsAction(id));
+  }, [id, dispatch,commentCreated,commentDeleted]);
+
+  
   //get login user
   const user = useSelector((state) => state?.users);
   const { userAuth } = user;
-
   const isCreatedBy = postDetails?.user?._id === userAuth?._id;
   console.log(isCreatedBy);
 
@@ -103,7 +108,7 @@ console.log(postDetails.comments)
 <AddComment postId={id}/>
           <div className="flex justify-center  items-center">
             {/* <CommentsList comments={post?.comments} postId={post?._id} /> */}
-            CommentsList
+           < CommentsList comments={postDetails?.comments}/>
           </div>
         </section>
       )}

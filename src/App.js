@@ -13,6 +13,7 @@ import PostsList from "./components/Posts/PostsList";
 import PostDetails from "./components/Posts/PostDetails";
 import UserProtectedRoute from "./components/Navigation/ProtectedRoutes/UserProtectedRoute";
 import UpdatePost from "./components/Posts/UpdatePost";
+import UpdateComment from "./components/Comments/UpdateComment";
 
 function App() {
   return (
@@ -46,6 +47,16 @@ function App() {
               </UserProtectedRoute>
             }
           />
+
+<Route
+            path="/update-comment/:id"
+            element={
+              <UserProtectedRoute>
+                <UpdateComment />
+              </UserProtectedRoute>
+            }
+          />
+
           <Route element={<AdminProtectedRoute />}>
             <Route path="/add-category" element={<AddNewCategory />} />
             <Route path="/update-category/:id" element={<UpdateCategory />} />
