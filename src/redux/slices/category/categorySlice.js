@@ -28,7 +28,7 @@ export const createCategoryAction = createAsyncThunk(
         },
         config
       );
-      //disoatch action
+      //dispatch action
       dispatch(resetCategoryAction());
       return data;
     } catch (error) {

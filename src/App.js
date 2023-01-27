@@ -14,6 +14,7 @@ import PostDetails from "./components/Posts/PostDetails";
 import UserProtectedRoute from "./components/Navigation/ProtectedRoutes/UserProtectedRoute";
 import UpdatePost from "./components/Posts/UpdatePost";
 import UpdateComment from "./components/Comments/UpdateComment";
+import Profile from "./components/Users/Profile/Profile";
 
 function App() {
   return (
@@ -53,6 +54,15 @@ function App() {
             element={
               <UserProtectedRoute>
                 <UpdateComment />
+              </UserProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/profile/:id"
+            element={
+              <UserProtectedRoute>
+                <Profile />
               </UserProtectedRoute>
             }
           />
