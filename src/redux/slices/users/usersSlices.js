@@ -4,7 +4,7 @@ import baseUrl from "../../../utils/baseUrl";
 
 //register action
 export const registerUserAction = createAsyncThunk(
-  "users/register",
+  "user/register",
   async (user, { rejectWithValue, getState, dispatch }) => {
     const config = {
       headers: {
@@ -56,7 +56,7 @@ export const loginUserAction = createAsyncThunk(
   }
 );
 
-//profile
+// Profile
 export const userProfileAction = createAsyncThunk(
   "user/profile",
   async (id, { rejectWithValue, getState, dispatch }) => {
@@ -72,9 +72,6 @@ export const userProfileAction = createAsyncThunk(
     try {
       const { data } = await axios.get(
         `${baseUrl}/api/users/profile/${id}`,
-        {
-          title: category?.title,
-        },
         config
       );
       return data;
@@ -152,7 +149,7 @@ const usersSlices = createSlice({
       state.serverErr = action?.error?.message;
       state.loading = false;
     });
-    // user profile
+    //Profile
     builder.addCase(userProfileAction.pending, (state, action) => {
       state.loading = true;
       state.appErr = undefined;

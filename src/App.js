@@ -15,6 +15,7 @@ import UserProtectedRoute from "./components/Navigation/ProtectedRoutes/UserProt
 import UpdatePost from "./components/Posts/UpdatePost";
 import UpdateComment from "./components/Comments/UpdateComment";
 import Profile from "./components/Users/Profile/Profile";
+import UploadProfilePhoto from "./components/Users/Profile/UploadProfilePhoto";
 
 function App() {
   return (
@@ -32,6 +33,14 @@ function App() {
           <Route exact path="/posts/:id" element={<PostDetails />} />
 
           <Route
+            path="/upload-photo/:id"
+            element={
+              <UserProtectedRoute>
+                <UploadProfilePhoto />
+              </UserProtectedRoute>
+            }
+          />
+          <Route
             path="/update-post/:id"
             element={
               <UserProtectedRoute>
@@ -39,6 +48,7 @@ function App() {
               </UserProtectedRoute>
             }
           />
+          
 
           <Route
             path="/create-post"
