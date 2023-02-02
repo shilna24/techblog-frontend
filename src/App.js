@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./components/HomePage/HomePage";
-
 import Login from "./components/Users/Login/Login";
 import Register from "./components/Users/Register/Register";
 import Navbar from "./components/Navigation/Navbar";
@@ -16,6 +15,9 @@ import UpdatePost from "./components/Posts/UpdatePost";
 import UpdateComment from "./components/Comments/UpdateComment";
 import Profile from "./components/Users/Profile/Profile";
 import UploadProfilePhoto from "./components/Users/Profile/UploadProfilePhoto";
+import AccountVerified from "./components/Users/AccountVerification/AccountVerified";
+import AdminLogin from "./components/Admin/Login/AdminLogin";
+
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
           <Route exact path="/posts" element={<PostsList />} />
 
           <Route exact path="/posts/:id" element={<PostDetails />} />
+
+          
 
           <Route
             path="/upload-photo/:id"
@@ -76,7 +80,15 @@ function App() {
               </UserProtectedRoute>
             }
           />
-
+          <Route
+            path="/verify-account/:token"
+            element={
+              <UserProtectedRoute>
+                <AccountVerified />
+              </UserProtectedRoute>
+            }
+          />
+          <Route exact path="/admin" element={<AdminLogin />} />
           <Route element={<AdminProtectedRoute />}>
             <Route path="/add-category" element={<AddNewCategory />} />
             <Route path="/update-category/:id" element={<UpdateCategory />} />

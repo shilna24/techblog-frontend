@@ -131,6 +131,7 @@ export const fetchPostDetailsAction = createAsyncThunk(
 );
 
 //Add Likes to post
+
 export const toggleAddLikesToPost = createAsyncThunk(
   "post/like",
   async (postId, { rejectWithValue, getState, dispatch }) => {
@@ -144,7 +145,7 @@ export const toggleAddLikesToPost = createAsyncThunk(
     };
     try {
       const { data } = await axios.put(
-        `http://localhost:5000/api/posts/likes`,
+        `${baseUrl}/api/posts/likes`,
         { postId },
         config
       );
@@ -157,8 +158,9 @@ export const toggleAddLikesToPost = createAsyncThunk(
   }
 );
 
+
 //Add DisLikes to post
-export const toggleAddDisLikesToPost = createAsyncThunk(
+export const toggleAddDislikesToPost = createAsyncThunk(
   "post/dislike",
   async (postId, { rejectWithValue, getState, dispatch }) => {
     //get user token
@@ -171,7 +173,7 @@ export const toggleAddDisLikesToPost = createAsyncThunk(
     };
     try {
       const { data } = await axios.put(
-        `http://localhost:5000/api/posts/dislikes`,
+        `${baseUrl}/api/posts/dislikes`,
         { postId },
         config
       );
@@ -278,36 +280,37 @@ const postSlice = createSlice({
       state.serverErr = action?.error?.message;
     });
     //Likes
-    builder.addCase(toggleAddLikesToPost.pending, (state, action) => {
+    builder.addCase(toggleAddLikesToPost.pending, (state,action)=>{
       state.loading = true;
-    });
-    builder.addCase(toggleAddLikesToPost.fulfilled, (state, action) => {
-      state.likes = action?.payload;
+  })
+
+  builder.addCase(toggleAddLikesToPost.fulfilled, (state,action)=>{
+      state.likes =action?.payload;
       state.loading = false;
       state.appErr = undefined;
       state.serverErr = undefined;
-    });
-    builder.addCase(toggleAddLikesToPost.rejected, (state, action) => {
+  })
+  builder.addCase(toggleAddLikesToPost.rejected, (state,action)=>{
       state.loading = false;
-      state.appErr = action?.payload?.message;
-      state.serverErr = action?.error?.message;
-    });
+      state.appErr= action?.payload?.message;
+      state.serverErr=action?.error?.message;
+  })
     //DisLikes
-    builder.addCase(toggleAddDisLikesToPost.pending, (state, action) => {
+    builder.addCase(toggleAddDislikesToPost.pending, (state,action)=>{
       state.loading = true;
-    });
-    builder.addCase(toggleAddDisLikesToPost.fulfilled, (state, action) => {
-      state.dislikes = action?.payload;
+  })
+
+  builder.addCase(toggleAddDislikesToPost.fulfilled, (state,action)=>{
+      state.dislikes =action?.payload;
       state.loading = false;
       state.appErr = undefined;
       state.serverErr = undefined;
-    });
-    builder.addCase(toggleAddDisLikesToPost.rejected, (state, action) => {
+  })
+  builder.addCase(toggleAddDislikesToPost.rejected, (state,action)=>{
       state.loading = false;
-      state.appErr = action?.payload?.message;
-      state.serverErr = action?.error?.message;
-    });
-  },
-});
+      state.appErr= action?.payload?.message;
+      state.serverErr=action?.error?.message;
+  })
+  }})
 
 export default postSlice.reducer;

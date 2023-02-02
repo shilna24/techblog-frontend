@@ -1,17 +1,25 @@
 import { useEffect } from "react";
 import { ThumbUpIcon, ThumbDownIcon, EyeIcon } from "@heroicons/react/solid";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link ,Navigate,useNavigate} from "react-router-dom";
 import {
   fetchPostsAction,
   toggleAddLikesToPost,
-  toggleAddDisLikesToPost,
+  toggleAddDislikesToPost,
 } from "../../redux/slices/posts/postSlices";
 import DateFormatter from "../../utils/DateFormatter";
 import { fetchCategoriesAction } from "../../redux/slices/category/categorySlice";
 import LoadingComponent from "../../utils/LoadingComponent";
 
 export default function PostsList() {
+  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  
+  // Select user from from store
+  const user = useSelector((state) => state?.users);
+  const { userAuth } = user;
+
   //select post from store
   const post = useSelector(state => state?.post);
   const { postLists, loading, appErr, serverErr, likes, dislikes } = post;
@@ -24,8 +32,7 @@ export default function PostsList() {
     appErr: catAppErr,
     serverErr: catServerErr,
   } = category;
-  //dispatch
-  const dispatch = useDispatch();
+  
   //fetch post
   useEffect(() => {
     dispatch(fetchPostsAction(""));
@@ -120,32 +127,74 @@ export default function PostsList() {
                           {/* Likes */}
                           <div className="flex flex-row justify-center items-center ml-4 mr-4 pb-2 pt-1">
                             {/* Toggle like  */}
-                            <div className="">
-                              <ThumbUpIcon
-                                onClick={() =>
-                                  dispatch(toggleAddLikesToPost(post?._id))
-                                }
-                                className="h-7 w-7 text-indigo-600 cursor-pointer"
-                              />
-                            </div>
-                            <div className="pl-2 text-gray-600">
-                              {post?.likes?.length}
-                            </div>
-                          </div>
-                          {/* Dislike */}
-                          <div className="flex flex-row  justify-center items-center ml-4 mr-4 pb-2 pt-1">
-                            <div>
-                              <ThumbDownIcon
-                                onClick={() =>
-                                  dispatch(toggleAddDisLikesToPost(post?._id))
-                                }
-                                className="h-7 w-7 cursor-pointer text-gray-600"
-                              />
-                            </div>
-                            <div className="pl-2 text-gray-600">
-                              {post?.disLikes?.length}
-                            </div>
-                          </div>
+                            
+                            {post?.likes.includes(userAuth?._id) ? (
+                                  <div className="ml-4">
+                                    <ThumbUpIcon
+                                      onClick={() =>
+                                        dispatch(
+                                          toggleAddLikesToPost(post?._id)
+                                        )
+                                      }
+                                      className=" h-5 w-5 text-blue-600 cursor-pointer"
+                                    />
+                                  </div>
+                                ) : (
+                                  <div className="ml-4">
+                                    <ThumbUpIcon
+                                      onClick={() =>
+                                        dispatch(
+                                          toggleAddLikesToPost(post?._id)
+                                        )
+                                      }
+                                      className=" h-5 w-5 text-gray-600 cursor-pointer"
+                                    />
+                                  </div>
+                                )}
+
+                                <div className="text-gray-600 ">
+                                  {post?.likes?.length
+                                    ? post?.likes?.length
+                                    : 0}
+                                </div>
+                              </div>
+                        
+                         {/* Dislike */}
+                         <div className="flex flex-row  justify-center items-center  mr-4 pb-2 pt-1 ">
+                                {post?.disLikes.includes(userAuth?._id) ? (
+                                  <div>
+                                    <ThumbDownIcon
+                                      onClick={() =>
+                                        dispatch(
+                                          toggleAddDislikesToPost(
+                                            post?._id
+                                          )
+                                        )
+                                      }
+                                      className="h-5 w-5 cursor-pointer text-red-600"
+                                    />
+                                  </div>
+                                ) : (
+                                  <div>
+                                    <ThumbDownIcon
+                                      onClick={() =>
+                                        dispatch(
+                                          toggleAddDislikesToPost(
+                                            post?._id
+                                          )
+                                        )
+                                      }
+                                      className="h-5 w-5 cursor-pointer text-gray-600"
+                                    />
+                                  </div>
+                                )}
+
+                                <div className=" text-gray-600">
+                                  {post?.disLikes?.length
+                                    ? post?.disLikes?.length
+                                    : 0}
+                                </div>
+                              </div>
                           {/* Views */}
                           <div className="flex flex-row justify-center items-center ml-4 mr-4 pb-2 pt-1">
                             <div>
