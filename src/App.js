@@ -16,6 +16,7 @@ import UpdateComment from "./components/Comments/UpdateComment";
 import Profile from "./components/Users/Profile/Profile";
 import UploadProfilePhoto from "./components/Users/Profile/UploadProfilePhoto";
 import AccountVerified from "./components/Users/AccountVerification/AccountVerified";
+import UpdateProfileForm from "./components/Users/Profile/UpdateProfileForm";
 
 
 function App() {
@@ -35,14 +36,7 @@ function App() {
 
           
 
-          <Route
-            path="/upload-photo/:id"
-            element={
-              <UserProtectedRoute>
-                <UploadProfilePhoto />
-              </UserProtectedRoute>
-            }
-          />
+          
           <Route
             path="/update-post/:id"
             element={
@@ -76,6 +70,23 @@ function App() {
             element={
               <UserProtectedRoute>
                 <Profile />
+              </UserProtectedRoute>
+            }
+          />
+          <Route
+            path="/upload-photo/:id"
+            element={
+              <UserProtectedRoute>
+                <UploadProfilePhoto />
+              </UserProtectedRoute>
+            }
+          />
+
+        <Route
+            path="/update-profile/:id"
+            element={
+              <UserProtectedRoute>
+                <UpdateProfileForm />
               </UserProtectedRoute>
             }
           />
