@@ -12,7 +12,7 @@ const navigation = [
   { name: "Home", href: "/", current: true },
   { name: "Blogs", href: "/posts", current: false },
   { name: "Register", href: "/register", current: false },
-  { name: "Login", href: "/login", current: false },
+  // { name: "Login", href: "/login", current: false },
 ];
 
 function classNames(...classes) {

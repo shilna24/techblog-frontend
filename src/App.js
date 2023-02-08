@@ -16,7 +16,6 @@ import UpdateComment from "./components/Comments/UpdateComment";
 import Profile from "./components/Users/Profile/Profile";
 import UploadProfilePhoto from "./components/Users/Profile/UploadProfilePhoto";
 import AccountVerified from "./components/Users/AccountVerification/AccountVerified";
-import AdminLogin from "./components/Admin/Login/AdminLogin";
 
 
 function App() {
@@ -88,7 +87,7 @@ function App() {
               </UserProtectedRoute>
             }
           />
-          <Route exact path="/admin" element={<AdminLogin />} />
+          
           <Route element={<AdminProtectedRoute />}>
             <Route path="/add-category" element={<AddNewCategory />} />
             <Route path="/update-category/:id" element={<UpdateCategory />} />

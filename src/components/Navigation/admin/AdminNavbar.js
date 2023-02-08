@@ -1,7 +1,6 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { useDispatch } from "react-redux";
 
 import { Link } from "react-router-dom";
 import {
@@ -12,13 +11,14 @@ import {
   LogoutIcon,
 } from "@heroicons/react/outline";
 import { PlusIcon } from "@heroicons/react/solid";
-import { logoutAction } from "../../../redux/slices/admin/adminSlices";
-// import { logoutAction } from "../../../redux/slices/users/usersSlices";
+import { logoutAction } from "../../../redux/slices/users/usersSlices";
+import { useDispatch } from "react-redux";
+
 
 const navigation = [
-  { name: "Home", href: "/admin", current: true },
+  { name: "Home", href: "/", current: true },
   { name: "Create", href: "/create-post", current: false },
-  { name: "Blogs", href: "/posts", current: false },
+  { name: "Posts", href: "/posts", current: false },
   { name: "Authors", href: "/users", current: false },
   { name: "Add Category", href: "/add-category", current: false },
   { name: "Category List", href: "/category-list", current: false },
@@ -28,15 +28,15 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const AdminNavbar = (isLogin) => {
+const AdminNavbar = ({isLogin}) => {
   //Navigation
-  // const userNavigation = [
-  //   { name: "Your Profile", href: `/profile/${isLogin}._id` },
-  //   { name: "Change your password", href: "/update-password" },
-  //   { name: "Settings", href: "/update-password" },
-  // ];
+  const userNavigation = [
+    { name: "Your Profile", href: `/profile/${isLogin?._id}` },
+    { name: "Change your password", href: "/update-password" },
+  ];
   //logout
   const dispatch = useDispatch();
+
   return (
     <Disclosure as="nav" className="bg-green-800">
       {({ open }) => (
@@ -93,7 +93,8 @@ const AdminNavbar = (isLogin) => {
                   </Link>
                   {/* Logout */}
                   <button
-                    onClick={() => dispatch(logoutAction())}
+                  onClick={()=>dispatch(logoutAction())}
+
                     type="button"
                     className="relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-indigo-500"
                   >
@@ -104,7 +105,56 @@ const AdminNavbar = (isLogin) => {
                     <span>Logout</span>
                   </button>
                 </div>
-                
+                <div className="hidden md:ml-4 md:flex-shrink-0 md:flex md:items-center">
+                  {/* Profile dropdown */}
+                  <Menu as="div" className="ml-3 relative z-10">
+                    {({ open }) => (
+                      <>
+                        <div>
+                          <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                            <span className="sr-only">Open user menu</span>
+                            <img
+                              className="h-8 w-8 rounded-full"
+                              src={isLogin?.profilePhoto}
+                              alt="Admin Profile"
+                            />
+                          </Menu.Button>
+                        </div>
+                        <Transition
+                          show={open}
+                          as={Fragment}
+                          enter="transition ease-out duration-200"
+                          enterFrom="transform opacity-0 scale-95"
+                          enterTo="transform opacity-100 scale-100"
+                          leave="transition ease-in duration-75"
+                          leaveFrom="transform opacity-100 scale-100"
+                          leaveTo="transform opacity-0 scale-95"
+                        >
+                          <Menu.Items
+                            static
+                            className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                          >
+                            {userNavigation.map(item => (
+                              <Menu.Item key={item.name}>
+                                {({ active }) => (
+                                  <a
+                                    href={item.href}
+                                    className={classNames(
+                                      active ? "bg-gray-100" : "",
+                                      "block px-4 py-2 text-sm text-gray-700"
+                                    )}
+                                  >
+                                    {item.name}
+                                  </a>
+                                )}
+                              </Menu.Item>
+                            ))}
+                          </Menu.Items>
+                        </Transition>
+                      </>
+                    )}
+                  </Menu>
+                </div>
               </div>
             </div>
           </div>
@@ -127,26 +177,24 @@ const AdminNavbar = (isLogin) => {
                 </Link>
               ))}
             </div>
+            {/* Mobile */}
             <div className="pt-4 pb-3 border-t border-gray-700">
               <div className="flex items-center px-5 sm:px-6">
                 <div className="flex-shrink-0">
                   {/* Image */}
-                  <img className="h-10 w-10 rounded-full" src="" alt="" />
+                  <img className="h-10 w-10 rounded-full" src={isLogin?.profilePhoto} alt="" />
                 </div>
                 <div className="ml-3">
                   <div className="text-base font-medium text-white">
-                    {/* {user.name} */}
+                  {isLogin?.firstName} {isLogin?.lastName}
                   </div>
                   <div className="text-sm font-medium text-gray-400">
-                    {/* {user.email} */}
+                  {isLogin?.email}
                   </div>
                 </div>
-                <button className="ml-auto flex-shrink-0 bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
+                
               </div>
-              {/* <div className="mt-3 px-2 space-y-1 sm:px-3">
+              <div className="mt-3 px-2 space-y-1 sm:px-3">
                 {userNavigation.map(item => (
                   <a
                     key={item.name}
@@ -156,7 +204,7 @@ const AdminNavbar = (isLogin) => {
                     {item.name}
                   </a>
                 ))}
-              </div> */}
+              </div>
             </div>
           </Disclosure.Panel>
         </>
