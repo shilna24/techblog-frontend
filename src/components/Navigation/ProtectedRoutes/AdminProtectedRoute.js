@@ -1,14 +1,14 @@
 import { useSelector } from "react-redux";
 import { Navigate, Outlet,  } from "react-router-dom";
 
-//check if  admin is loggin
+//check if  user is loggin
 
 const AdminProtectedRoute = () => {
-  const admin = useSelector((state) => state.admin);
-  const { adminAuth } = admin;
-  const isAdmin = adminAuth?.isAdmin;
+  const user = useSelector((state) => state.users);
+  const { userAuth } = user;
+  const isAdmin = userAuth?.isAdmin;
 
-  return isAdmin ? <Outlet /> : <Navigate to="/adminLogin" />;
+  return isAdmin ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export default AdminProtectedRoute;

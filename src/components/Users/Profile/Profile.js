@@ -6,13 +6,8 @@ import {
   UploadIcon,
   UserIcon,
 } from "@heroicons/react/outline";
-
-
-
-
 import { MailIcon, EyeIcon } from "@heroicons/react/solid";
 import { followUserAction, unfollowUserAction, userProfileAction } from "../../../redux/slices/users/usersSlices";
-
 import { useDispatch, useSelector } from "react-redux";
 import DateFormatter from "../../../utils/DateFormatter";
 import LoadingComponent from "../../../utils/LoadingComponent";

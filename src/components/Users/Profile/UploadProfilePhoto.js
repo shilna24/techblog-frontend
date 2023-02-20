@@ -1,13 +1,11 @@
-
 import { UploadIcon } from "@heroicons/react/outline";
 import Dropzone from "react-dropzone";
 import { useFormik } from "formik";
 import styled from "styled-components";
 import * as Yup from "yup";
-
+import { uploadProfilePhotoAction } from "../../../redux/slices/users/usersSlices";
 import { useDispatch,useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { uploadProfilePhototAction } from "../../../redux/slices/users/usersSlices";
 
 
 //Css for dropzone
@@ -41,13 +39,13 @@ export default function UploadProfilePhoto() {
       image: "",
     },
     onSubmit: values => {
-     dispatch(uploadProfilePhototAction(values));
+     dispatch(uploadProfilePhotoAction(values));
     },
     validationSchema: formSchema,
   });
 
   //store data 
-  const users = useSelector(state=>state?.users)
+  const users = useSelector(state=>state.users)
   const {profilePhoto,loading,appErr,serverErr,userAuth} = users
   //redirect
   if(profilePhoto) return navigate(`/profile/${userAuth?._id}`)

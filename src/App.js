@@ -17,7 +17,10 @@ import Profile from "./components/Users/Profile/Profile";
 import UploadProfilePhoto from "./components/Users/Profile/UploadProfilePhoto";
 import AccountVerified from "./components/Users/AccountVerification/AccountVerified";
 import UpdateProfileForm from "./components/Users/Profile/UpdateProfileForm";
-
+import UsersList from "./components/Users/UsersList/UsersList";
+import UpdatePassword from "./components/Users/PasswordManagement/UpdatePassword";
+import ResetPasswordForm from "./components/Users/PasswordManagement/ResetPasswordForm";
+import ResetPassword from "./components/Users/PasswordManagement/ResetPassword";
 
 function App() {
   return (
@@ -33,8 +36,10 @@ function App() {
           <Route exact path="/posts" element={<PostsList />} />
 
           <Route exact path="/posts/:id" element={<PostDetails />} />
-
           
+          <Route exact path="/password-reset-token" element={<ResetPasswordForm />} />
+
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
 
           
           <Route
@@ -74,10 +79,19 @@ function App() {
             }
           />
           <Route
-            path="/upload-photo/:id"
+            path="/upload-profile-photo"
             element={
               <UserProtectedRoute>
                 <UploadProfilePhoto />
+              </UserProtectedRoute>
+            }
+          />
+
+         <Route
+            path="/update-password"
+            element={
+              <UserProtectedRoute>
+                <UpdatePassword />
               </UserProtectedRoute>
             }
           />
@@ -100,9 +114,13 @@ function App() {
           />
           
           <Route element={<AdminProtectedRoute />}>
+            
             <Route path="/add-category" element={<AddNewCategory />} />
+            
             <Route path="/update-category/:id" element={<UpdateCategory />} />
-            <Route exact path="/category-list" element={<CategoryList />} />
+            
+            <Route path="/category-list" element={<CategoryList />} />
+            <Route path="/users" element={<UsersList />} />
           </Route>
 
           {/* <Route path="*" element={<PageNotFound />} /> */}

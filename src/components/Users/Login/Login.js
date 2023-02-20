@@ -1,11 +1,11 @@
 import React from "react";
 import { useFormik } from "formik";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react"
 import * as Yup from "yup";
 import poster from "../../../img/poster.png";
 import { loginUserAction } from "../../../redux/slices/users/usersSlices";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate,useNavigate,Link } from "react-router-dom";
+
 
 //Form schema
 const formSchema = Yup.object({
@@ -14,12 +14,9 @@ const formSchema = Yup.object({
 });
 
 const Login = () => {
-  const dispatch = useDispatch();
-  const navigate=useNavigate()
-
-  const store = useSelector(state => state?.users);
-  const { userAuth, loading, serverErr, appErr } = store;
-  console.log(userAuth);
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  
   //formik
   const formik = useFormik({
     initialValues: {
@@ -28,22 +25,17 @@ const Login = () => {
     },
     onSubmit: values => {
       //dispath the action
-      dispatch(loginUserAction(values));
+      dispatch(loginUserAction(values))
+      console.log(values);
     },
     validationSchema: formSchema,
   });
 
-  //redirect
-  useEffect(() => {
-    if (userAuth?.isAdmin) {
-      //console.log(userAuth);
-      navigate("/posts");
-    }
-    if (userAuth?.isAdmin === false) {
-      navigate("/posts");
-    }
-  }, [userAuth, navigate]);
+  //redirect after successful login
+  const store = useSelector((state)=>state?.users)
   
+  const {userAuth,loading,serverErr,appErr}=store
+  if(userAuth) return <Navigate to ={`/profile/${userAuth?._id}`}/>
 
   return (
     <>
@@ -64,14 +56,11 @@ const Login = () => {
                   <form onSubmit={formik.handleSubmit}>
                     <h3 className="mb-10 text-2xl font-bold font-heading">
                       {/* Header */}
+                      
                       Login to your Account
                     </h3>
-                    {/* display err */}
-                    {serverErr || appErr ? (
-                      <h2 className="text-red-500 text-center font-serif mb-4">
-                        {serverErr} {appErr}
-                      </h2>
-                    ) : null}
+                    {/* {display error} */}
+                    {serverErr || appErr ? <h2 className="text-red-500"> {serverErr}-{appErr}</h2> : null}
                     <div className="flex items-center pl-6 mb-3 border border-gray-50 bg-white rounded-full">
                       <span className="inline-block pr-3 border-r border-gray-50">
                         <svg
@@ -141,22 +130,28 @@ const Login = () => {
                       {formik.touched.password && formik.errors.password}
                     </div>
                     {/* Login btn */}
-                    {loading ? (
+                    {loading?(
                       <button
-                        disabled
-                        className="py-4 w-full bg-gray-500 text-white font-bold rounded-full transition duration-200"
-                      >
-                        Loading...
-                      </button>
-                    ) : (
-                      <button
-                        type="submit"
-                        className="py-4 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-full transition duration-200"
-                      >
-                        Login
-                      </button>
-                    )}
+                      disabled
+                      className="py-4 w-full bg-gray-500 text-white font-bold rounded-full transition duration-200"
+                    >
+                      Loading...
+                    </button>
+                    ):(<button
+                      type="submit"
+                      className="py-4 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-full transition duration-200"
+                    >
+                      Login
+                    </button>)}
                   </form>
+                  <div className="p-2">
+                    <Link
+                      to="/password-reset-token"
+                      className="font-medium text-indigo-600 hover:text-indigo-500"
+                    >
+                      Forget Password ?
+                    </Link>
+                  </div>
                 </div>
               </div>
               <div className="w-full lg:w-3/5 px-4 mb-16 lg:mb-0 order-first lg:order-last">
