@@ -16,12 +16,15 @@ import { useDispatch } from "react-redux";
 
 
 const navigation = [
-  { name: "Home", href: "/", current: true },
-  { name: "Create", href: "/create-post", current: false },
+  // { name: "Home", href: "/", current: true },
+  // { name: "Create", href: "/create-post", current: false },
   { name: "Posts", href: "/posts", current: false },
   { name: "Authors", href: "/users", current: false },
   { name: "Add Category", href: "/add-category", current: false },
   { name: "Category List", href: "/category-list", current: false },
+  { name: "Reported Posts", href: "/reported-list", current: false },
+  { name: "New Post", href: "/create-post", current: false },
+  
 ];
 
 function classNames(...classes) {
@@ -33,6 +36,7 @@ const AdminNavbar = ({isLogin}) => {
   const userNavigation = [
     { name: "Your Profile", href: `/profile/${isLogin?._id}` },
     { name: "Change your password", href: "/update-password" },
+    { name: "Saved Posts", href: "/saved-list" },
   ];
   //logout
   const dispatch = useDispatch();

@@ -4,7 +4,11 @@ import Dropzone from "react-dropzone";
 import {useNavigate  } from "react-router-dom";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { createpostAction } from "../../redux/slices/posts/postSlices";
+import JoditEditor from "jodit-react";
+import { useMemo, useRef } from "react";
+import React, {Component, PropTypes} from 'react';
+import {useEffect,useState} from "react"
+import { createpostAction,fetchPostsAction } from "../../redux/slices/posts/postSlices";
 import CategoryDropDown from "../Categories/CategoryDropDown";
 
 //Form schema
@@ -31,8 +35,11 @@ border-color:'red'
 `;
 
 export default function CreatePost() {
+  const editor = useRef(null);
+
   const navigate=useNavigate();
   const dispatch = useDispatch();
+  const [preview, setPreview] = useState('');
 
   //select store data
   const post = useSelector(state => state?.post);
@@ -59,36 +66,68 @@ export default function CreatePost() {
     validationSchema: formSchema,
   });
 
+ // Image Preview
+ let image = formik?.values?.image;
+ useEffect(() => {
+   if (image) {
+     const reader = new FileReader();
+     reader.onloadend = () => {
+       setPreview(reader.result);
+     };
+     reader.readAsDataURL(image);
+   } else {
+     setPreview(null);
+   }
+ }, [image]);
+
   //redirect
   if (isCreated) return navigate("/posts")
   return (
     <>
-      <div className="min-h-screen bg-gray-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-300">
-            Create Post
-          </h2>
+      <div className="container min-h-screen bg-gray-200 flex flex-col justify-center py-12 sm:px-6 lg:px-2">
+        <div className="sm:mx-auto sm:w-full sm:max-w-md ">
+          <h1 className=" text-center text-3xl font-extrabold text-black-700 animate-bounce">
+            What going in Your Mind?...
+          </h1>
 
-          <p className="mt-2 text-center text-sm text-gray-600">
-            <p className="font-medium text-green-600 hover:text-indigo-500">
-              Share your ideas to the word. Your post must be free from
+          <p className="mt-2 text-center text-sm text-gray-600 shadow-md shadow-gray-50">
+            <p className="font-semibold  font-serif text-gray-700 hover:text-indigo-500  ">
+              Share your ideas to the world. Your post must be free from
               profanity
             </p>
           </p>
 
           {appErr || serverErr ? (
-            <p className="mt-2 text-center text-lg text-red-600">
-              {serverErr} {appErr}
-            </p>
-          ) : null}
+                  <p className="mt-2 text-center text-lg text-red-600">
+                    {serverErr}... {appErr}
+                  </p>
+                ) : null}
         </div>
-        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div className="rounded-br-lg shadow-xl">
+          <div className="bg-gray-100 py-8 px-4 shadow sm:rounded-lg sm:px-10 shadow-md shadow-gray-50">
             <form onSubmit={formik.handleSubmit} className="space-y-6">
+
+                {/* Category input goes here */}
+
+              <label
+                htmlFor="category"
+                className="block text-bold font-medium text-black "
+              >
+                Select Category
+              </label>
+
+              <CategoryDropDown
+                value={formik.values.category?.label}
+                onChange={formik.setFieldValue}
+                onBlur={formik.setFieldTouched}
+                error={formik.errors.category}
+                touched={formik.touched.category}
+              />
+
               <div>
                 <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700"
+                  htmlFor="title"
+                  className="block text-bold font-medium text-black"
                 >
                   Title
                 </label>
@@ -110,29 +149,29 @@ export default function CreatePost() {
                   {formik?.touched?.title && formik?.errors?.title}
                 </div>
               </div>
-              {/* Category input goes here */}
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Select Category
-              </label>
-              <CategoryDropDown
-                value={formik.values.category?.label}
-                onChange={formik.setFieldValue}
-                onBlur={formik.setFieldTouched}
-                error={formik.errors.category}
-                touched={formik.touched.category}
-              />
+              
               <div>
                 <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-700"
+                  htmlFor="description"
+                  className="block text-bold font-medium text-black"
                 >
-                  Description
+                  Post Content
                 </label>
                 {/* Description */}
-                <textarea
+
+                
+                {/* <textarea
+                    value={formik.values.description}
+                    onChange={formik.handleChange("description")}
+                    onBlur={formik.handleBlur("description")}
+                     rows="5"
+                    cols="10"
+                     className="rounded-lg appearance-none block w-full py-3 px-3 text-base text-center leading-tight text-gray-600 bg-transparent focus:bg-transparent  border border-gray-200 focus:border-gray-500  focus:outline-none"
+                     type="text"
+                   ></textarea> */}
+
+                <JoditEditor
+                  ref={editor}
                   value={formik.values.description}
                   onChange={formik.handleChange("description")}
                   onBlur={formik.handleBlur("description")}
@@ -140,19 +179,40 @@ export default function CreatePost() {
                   cols="10"
                   className="rounded-lg appearance-none block w-full py-3 px-3 text-base text-center leading-tight text-gray-600 bg-transparent focus:bg-transparent  border border-gray-200 focus:border-gray-500  focus:outline-none"
                   type="text"
-                ></textarea>
+                  />
+                {/* Err msg */}
+                <div className="text-red-500">
+                  {formik?.touched?.description && formik?.errors?.description}
+                </div>
+
                 {/* Image component */}
                 <label
-                  htmlFor="password"
-                  className="block text-sm font-medium mt-3 mb-2 text-gray-700"
+                  htmlFor="image"
+                  className="block text-bold font-medium text-black"
                 >
                   Select image to upload
                 </label>
+
+                
+          {/* image preview */}
+								{preview ? (
+									<div className="border border-gray-300 p-2 bg-gray-100 rounded-md shadow-sm">
+										<img
+											className="mx-auto  w-2/4"
+											src={preview}
+											alt=""
+											onClick={() => {
+												setPreview(null);
+											}}
+										/>
+									</div>
+								) : (
+
                 <Container className="container bg-gray-700">
                   <Dropzone
                     onBlur={formik.handleBlur("image")}
-                    accept="image/jpeg, image/png"
-                    onDrop={acceptedFiles => {
+                    accept="image/jpeg, image/png image/webp"
+                    onDrop={(acceptedFiles) => {
                       formik.setFieldValue("image", acceptedFiles[0]);
                     }}
                   >
@@ -161,7 +221,7 @@ export default function CreatePost() {
                         <div
                           {...getRootProps({
                             className: "dropzone",
-                            onDrop: event => event.stopPropagation(),
+                            onDrop: (event) => event.stopPropagation(),
                           })}
                         >
                           <input {...getInputProps()} />
@@ -173,10 +233,16 @@ export default function CreatePost() {
                     )}
                   </Dropzone>
                 </Container>
+                )}
+
                 {/* Err msg */}
                 <div className="text-red-500">
-                  {formik?.touched?.description && formik.errors?.description}
+                  {formik?.touched?.image && formik?.errors?.image}
                 </div>
+
+                
+
+                
               </div>
               <div>
                 {/* Submit btn */}
@@ -190,9 +256,9 @@ export default function CreatePost() {
                 ) : (
                   <button
                     type="submit"
-                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-xl text-sm font-bold text-white bg-black hover:from-pink-600 hover:to-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 "
                   >
-                    Create
+                    Publish
                   </button>
                 )}
               </div>
@@ -200,6 +266,9 @@ export default function CreatePost() {
           </div>
         </div>
       </div>
+      {/* <div className="container">
+      <NewFeed />
+      </div> */}
     </>
   );
 }

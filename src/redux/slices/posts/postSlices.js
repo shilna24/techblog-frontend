@@ -186,6 +186,142 @@ export const toggleAddDislikesToPost = createAsyncThunk(
   }
 );
 
+
+  //---save posts-------------
+  export const savedPostAction = createAsyncThunk(
+    "/posts/save", async(id,{ rejectWithValue, getState, dispatch})=>{
+            //get user token
+            const user = getState()?.users;
+            const { userAuth } = user;
+            console.log(userAuth,"ghjkl");
+            const config = {
+              headers: {
+                Authorization: `Bearer ${userAuth?.token}`,
+              },
+            };
+      try {
+        const { data } = await axios.post(`${baseUrl}/api/posts/save`,{id},config)
+        return data;
+      } catch (error) {
+        if (!error?.response) throw error;
+        return rejectWithValue(error?.response?.data);
+      }
+    }
+   )
+
+   //-------saved posts list------------
+
+   export const fetchSavedPostAction = createAsyncThunk(
+     "/posts/saved-lists", async(id,{ rejectWithValue, getState, dispatch})=>{
+        //get user token
+        const user = getState()?.users;
+        const { userAuth } = user;
+        console.log(userAuth,"ghjkl");
+        const config = {
+          headers: {
+            Authorization: `Bearer ${userAuth?.token}`,
+          },
+        };
+      try {
+        const {data} =await axios.get(`${baseUrl}/api/posts/saved-list`,config)
+        console.log(data,"data");
+        return data;
+      } catch (error) {
+        if (!error?.response) throw error;
+        return rejectWithValue(error?.response?.data);
+      }
+     }
+   )
+
+    //---------delete a saved post---------
+    export const deleteSavedPostAction = createAsyncThunk(
+      "/posts/delete-postSaved", async(id,{ rejectWithValue, getState, dispatch})=>{
+          //get user token
+          const user = getState()?.users;
+          const { userAuth } = user;
+          console.log(userAuth,"ghjkl");
+          const config = {
+            headers: {
+              Authorization: `Bearer ${userAuth?.token}`,
+            },
+          };
+        try {
+          const {data} =await axios.delete(`${baseUrl}/api/posts/saved/${id}`,config);
+          return data;
+        } catch (error) {
+          if (!error?.response) throw error;
+          return rejectWithValue(error?.response?.data);
+        }
+      }
+    )
+
+//Report a post
+
+export const reportPostAction = createAsyncThunk(
+  "post/report",
+  async (postId, { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const user = getState()?.users;
+    const { userAuth } = user;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userAuth?.token}`,
+      },
+    };
+    try {
+      
+      const { data } = await axios.post(
+        `${baseUrl}/api/posts/report-post`,
+        { postId },
+        config
+      );
+
+      return data;
+    } catch (error) {
+      if (!error?.response) throw error;
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+ //-------reported posts list------------
+
+ export const fetchReportedPostAction = createAsyncThunk(
+  "/posts/reported-list", async(id,{ rejectWithValue,getState,dispatch})=>{
+  
+   try {
+     const {data} =await axios.get(`${baseUrl}/api/posts/reported-list`)
+     console.log(data,"data");
+     return data;
+   } catch (error) {
+     if (!error?.response) throw error;
+     return rejectWithValue(error?.response?.data);
+   }
+  }
+)
+
+//Block post
+export const blockPostAction = createAsyncThunk(
+  "post/block",
+  async (postId, { rejectWithValue, getState, dispatch }) => {
+
+    try {
+      const { data } = await axios.post(
+        `${baseUrl}/api/posts/block-post`,
+        {postId},
+   
+      );
+      return data;
+    } catch (error) {
+      if (!error?.response) throw error;
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+
+
+
 //slice
 const postSlice = createSlice({
   name: "post",
@@ -317,6 +453,129 @@ const postSlice = createSlice({
       state.appErr= action?.payload?.message;
       state.serverErr=action?.error?.message;
   })
-  }})
+
+
+        //--------save post--------
+        builder.addCase(savedPostAction.pending, (state,action)=>{
+          state.loading = true;
+      })
+    
+      builder.addCase(savedPostAction.fulfilled, (state,action)=>{
+        state.saved = true
+        state.deleted = false
+        state.savedPost = action?.payload;
+        state.loading = false;
+        state.appErr = undefined;
+        state.serverErr = undefined;
+      })
+      builder.addCase(savedPostAction.rejected, (state,action)=>{
+          state.loading = false;
+          state.appErr= action?.payload?.message;
+          state.serverErr=action?.error?.message;
+      })
+
+      //------fetch saved posts-------------------
+      
+      builder.addCase(fetchSavedPostAction.pending, (state,action)=>{
+          state.loading = true;
+      })
+    
+      builder.addCase(fetchSavedPostAction.fulfilled, (state,action)=>{
+        console.log(action?.payload,"action");
+        state.saved = true
+        state.deleted = false
+        state.savedList = action?.payload;
+        state.loading = false;
+        state.appErr = undefined;
+        state.serverErr = undefined;
+      })
+      builder.addCase(fetchSavedPostAction.rejected, (state,action)=>{
+          state.loading = false;
+          state.appErr= action?.payload?.message;
+          state.serverErr=action?.error?.message;
+      })
+
+      
+         //------------delete a saved post------------
+
+      builder.addCase(deleteSavedPostAction.pending, (state,action)=>{
+        state.loading = true;
+      })
+    
+      builder.addCase(deleteSavedPostAction.fulfilled, (state,action)=>{
+        state.deleted = true
+        state.saved = false
+        state.deletedPost = action?.payload;
+        state.loading = false;
+        state.appErr = undefined;
+        state.serverErr = undefined;
+      })
+      builder.addCase(deleteSavedPostAction.rejected, (state,action)=>{
+          state.loading = false;
+          state.appErr= action?.payload?.message;
+          state.serverErr=action?.error?.message;
+      })
+
+
+//--------------post report
+
+         
+builder.addCase(reportPostAction.pending, (state,action)=>{
+  state.loading = true;
+})
+
+builder.addCase(reportPostAction.fulfilled, (state,action)=>{
+  state.reports =action?.payload;
+  state.loading = false;
+  state.appErr = undefined;
+  state.serverErr = undefined;
+})
+builder.addCase(reportPostAction.rejected, (state,action)=>{
+  state.loading = false;
+  state.appErr= action?.payload?.message;
+  state.serverErr=action?.error?.message;
+})
+
+
+    //------fetch reported posts-------------------
+
+  builder.addCase(fetchReportedPostAction.pending, (state,action)=>{
+      state.loading = true;
+  })
+
+  builder.addCase(fetchReportedPostAction.fulfilled, (state,action)=>{
+    console.log(action?.payload,"action");
+    state.reported = true
+    state.reportedList = action?.payload;
+    state.loading = false;
+    state.appErr = undefined;
+    state.serverErr = undefined;
+  })
+  builder.addCase(fetchReportedPostAction.rejected, (state,action)=>{
+      state.loading = false;
+      state.appErr= action?.payload?.message;
+      state.serverErr=action?.error?.message;
+  })
+    //block - post
+builder.addCase(blockPostAction.pending, (state, action) => {
+state.loading = true;
+state.appErr = undefined;
+state.serverError = undefined;
+});
+builder.addCase(blockPostAction.fulfilled, (state, action) => {
+state.loading = false;
+state.blockPost = action?.payload;
+state.appErr = undefined;
+state.serverError = undefined;
+});
+builder.addCase(blockPostAction.rejected, (state, action) => {
+state.loading = false;
+state.appErr = action?.payload?.message;
+state.serverError = action?.error?.message;
+});
+
+
+  }
+})
 
 export default postSlice.reducer;

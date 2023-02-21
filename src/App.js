@@ -21,6 +21,8 @@ import UsersList from "./components/Users/UsersList/UsersList";
 import UpdatePassword from "./components/Users/PasswordManagement/UpdatePassword";
 import ResetPasswordForm from "./components/Users/PasswordManagement/ResetPasswordForm";
 import ResetPassword from "./components/Users/PasswordManagement/ResetPassword";
+import ReportedPost from "./components/Posts/ReportedPost";
+import AdminDashboard from "./components/Admin/AdminDashboard";
 
 function App() {
   return (
@@ -40,6 +42,9 @@ function App() {
           <Route exact path="/password-reset-token" element={<ResetPasswordForm />} />
 
           <Route path="/reset-password/:token" element={<ResetPassword />} />
+          
+          
+
 
           
           <Route
@@ -114,13 +119,19 @@ function App() {
           />
           
           <Route element={<AdminProtectedRoute />}>
-            
+          
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
+
             <Route path="/add-category" element={<AddNewCategory />} />
             
             <Route path="/update-category/:id" element={<UpdateCategory />} />
             
             <Route path="/category-list" element={<CategoryList />} />
+            
             <Route path="/users" element={<UsersList />} />
+
+            <Route path="/reported-list" element={<ReportedPost />} />
+
           </Route>
 
           {/* <Route path="*" element={<PageNotFound />} /> */}
