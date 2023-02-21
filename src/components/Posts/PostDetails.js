@@ -93,7 +93,7 @@ const PostDetails = () => {
     });
   }
 
-  const shareUrl = `${baseUrl}/posts/${postDetails?._id}`;
+  // const shareUrl = `${baseUrl}/posts/${postDetails?._id}`;
 
   function openModal() {
     setModalIsOpen(true);
@@ -197,7 +197,7 @@ const PostDetails = () => {
                         <TrashIcon class="h-8 mt-3 text-black-600 " />
                       </button>
                        
-                      <div>
+                      {/* <div>
                       <button onClick={openModal}>
                         <FiShare2 className="ml-4 h-8 mt-6 text-black-600 " />
                       </button>
@@ -237,7 +237,7 @@ const PostDetails = () => {
                           <AiOutlineCloseCircle className="ml-10 item-center "/>
                         </button>
                       </Modal>
-                      </div>
+                      </div> */}
 
                     </p>
                   ) : (
@@ -303,7 +303,7 @@ const PostDetails = () => {
                     
                     </div>
 
-                    <div>
+                    {/* <div>
                       <button onClick={openModal}>
                         <FiShare2 className="ml-4 h-8 mt-5 text-black-600 " />
                       </button>
@@ -344,7 +344,7 @@ const PostDetails = () => {
                           <AiOutlineCloseCircle className="ml-10 item-center "/>
                         </button>
                       </Modal>
-                      </div>
+                      </div> */}
 
 
                   </div>

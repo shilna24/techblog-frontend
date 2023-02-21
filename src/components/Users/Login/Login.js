@@ -141,7 +141,7 @@ return (
                   ) : (
                     <button
                       type="submit"
-                      className="py-4 w-full bg-slate-900 hover:bg-black text-white font-bold rounded-full transition duration-200"
+                      className="py-4 w-full bg-cyan-900 hover:bg-cyan-600 text-white font-bold rounded-full transition duration-200"
                     >
                       Login
                     </button>
@@ -201,11 +201,11 @@ return (
               
             <div className="w-60 lg:w-1/2 px-5 ml-30 flex mb-10 mx-auto items-center justify-center h-20 w-20">
        
-            <img className="w-full" src={login2} alt={login2 } />
+            {/* <img className="w-full" src={login2} alt={login2 } /> */}
             
           </div>
           <div>
-          <h2 className="mb-10 text-center text-6xl lg:text-7xl text-black-300 font-bold font-heading ml-15">
+          <h2 className="mb-10 text-center text-6xl lg:text-7xl text-cyan-800 font-bold font-heading ml-15">
                 Ready to start? Login Now.
               </h2>
           </div>
