@@ -1,12 +1,10 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { MailIcon } from "@heroicons/react/solid";
+import { Link } from "react-router-dom";
 import { blockUserAction, unBlockUserAction } from "../../../redux/slices/users/usersSlices";
-import {useDispatch,useSelector}from 'react-redux';
+import {useDispatch}from 'react-redux';
 
 const UsersListItem = user => {
   const dispatch=useDispatch()
-  const navigate=useNavigate()
   return (
     <>
       <div className="p-8 mb-4 bg-white shadow rounded">
@@ -19,7 +17,7 @@ const UsersListItem = user => {
             />
             <div>
               <p className="text-sm font-medium">{user?.user?.firstName} {user?.user?.lastName}</p>
-              <p className="text-xs text-gray-500">Email</p>
+              {/* <p className="text-xs text-gray-500">Email</p> */}
             </div>
           </div>
           <div className="w-1/2 lg:w-2/12 px-4 mb-6 lg:mb-0">
@@ -65,7 +63,7 @@ const UsersListItem = user => {
               </button>
             )}
 
-            <Link
+            {/* <Link
               to={`/send-mail?email=${user?.user?.email}`}
               className="inline-flex  justify-center bg-green-700 px-2   border border-yellow-700 shadow-sm text-sm font-medium rounded-md text-gray-700  hover:bg-green-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
             >
@@ -76,7 +74,7 @@ const UsersListItem = user => {
               <span className="text-base mr-2  text-bold text-yellow-500">
                 Message
               </span>
-            </Link>
+            </Link> */}
           </div>
           <div className="w-full lg:w-1/12 px-4">
             <div className="flex items-center">

@@ -8,7 +8,7 @@ import {
   BookOpenIcon,
 } from "@heroicons/react/outline";
 import { PlusIcon } from "@heroicons/react/solid";
-import logo2 from "../../../img/logo2.png";
+import TECHLOGO from "../../../img/TECHLOGO.png";
 
 const navigation = [
   // { name: "Home", href: "/", current: true },
@@ -35,7 +35,7 @@ const PublicNavbar = () => {
               <div className="flex">
                 <div className="-ml-2 mr-2 flex items-center md:hidden">
                   {/* Mobile menu button */}
-                  <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                  <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-cyan-800 hover:text-white hover:bg-cyan-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                     <span className="sr-only">Open main menu</span>
                     {open ? (
                       <XIcon className="block h-6 w-6" aria-hidden="true" />
@@ -46,9 +46,9 @@ const PublicNavbar = () => {
                 </div>
                 <div className="flex-shrink-0 flex items-center">
                   {/* Logo */}
-                  <h1 className="text-black font-mono">ItBlog</h1>
+                  {/* <h1 className="text-cyan-800 font-mono">TechBlog</h1> */}
                   <Link to="/">
-                    <img className="w-20 text-black" src={logo2} alt={logo2} />
+                    <img className="w-14 h-14 " src={TECHLOGO} alt={TECHLOGO} />
                   </Link>
                 </div>
                 <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
@@ -73,7 +73,7 @@ const PublicNavbar = () => {
                 <div className="flex-shrink-0">
                   <Link
                     to="/posts"
-                    className="pr-3  inline-flex items-center  mr-2 px-3 py-2 border border-transparent shadow-lg shadow-gray-300 text-sm font-medium rounded-md text-white bg-sky-900  hover:bg-sky-700  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-sky-500"
+                    className="pr-3  inline-flex items-center  mr-2 px-3 py-2 border border-transparent shadow-lg shadow-gray-300 text-sm font-medium rounded-md text-white bg-cyan-900  hover:bg-cyan-700  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-sky-500"
                    // className="relative inline-flex items-center px-4 py-2  text-sm font-medium rounded-md text-black"
                   >
                     <svg
@@ -102,7 +102,7 @@ const PublicNavbar = () => {
                     to="/login"
                     type="button"
                     // className="relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-indigo-500"
-                    className="relative inline-flex items-center px-4 py-2 border border-transparent shadow-lg shadow-gray-300 text-sm font-medium rounded-md text-white bg-sky-900  hover:bg-sky-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-gray-500"
+                    className="relative inline-flex items-center px-4 py-2 border border-transparent shadow-lg shadow-gray-300 text-sm font-medium rounded-md text-white bg-cyan-900  hover:bg-cyan-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-cyan-500"
                    // className="relative inline-flex items-center px-4 py-2  text-sm font-medium rounded-md text-black "
                   >
                     <LoginIcon
@@ -149,7 +149,7 @@ const PublicNavbar = () => {
               <Link
                 to="/posts"
                 //className="pr-3  inline-flex items-center  mr-2 px-3 py-2 border border-transparent shadow-lg shadow-gray-300 text-sm font-medium rounded-md text-white bg-gray-400  hover:bg-gray-700  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-gray-500"
-                className="relative inline-flex items-center px-4 py-2  text-sm font-medium rounded-md text-black "
+                className="relative inline-flex items-center px-4 py-2  text-sm font-medium rounded-md text-cyan-800 "
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -178,7 +178,7 @@ const PublicNavbar = () => {
                 type="button"
                 // className="relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-indigo-500"
                 //className="relative inline-flex items-center px-4 py-2 border border-transparent shadow-lg shadow-gray-300 text-sm font-medium rounded-md text-white bg-gray-400  hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-gray-500"
-                className="relative inline-flex items-center px-4 py-2  text-sm font-medium rounded-md text-black "
+                className="relative inline-flex items-center px-4 py-2  text-sm font-medium rounded-md text-cyan-800 "
               >
                 <LoginIcon className="ml-1 mr-2 h-5 w-5" aria-hidden="true" />
                 <span>Login</span>
@@ -187,7 +187,7 @@ const PublicNavbar = () => {
                 to="/register"
                 //className="relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-pink-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-indigo-500"
                 //className="relative inline-flex items-center px-4 py-2 border border-transparent shadow-lg shadow-gray-300 text-sm font-medium rounded-md bg-gray-400 text-white hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-gray-500"
-                className="relative inline-flex items-center px-4 py-2  text-sm font-medium rounded-md text-black "
+                className="relative inline-flex items-center px-4 py-2  text-sm font-medium rounded-md text-cyan-800 "
               >
                 <PlusIcon className=" mr-2 h-5 w-5" aria-hidden="true" />
                 <span>Register</span>

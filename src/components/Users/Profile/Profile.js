@@ -6,7 +6,7 @@ import {
   UploadIcon,
   UserIcon,
 } from "@heroicons/react/outline";
-import { MailIcon, EyeIcon } from "@heroicons/react/solid";
+import {  EyeIcon } from "@heroicons/react/solid";
 import { followUserAction, unfollowUserAction, userProfileAction } from "../../../redux/slices/users/usersSlices";
 import { useDispatch, useSelector } from "react-redux";
 import DateFormatter from "../../../utils/DateFormatter";
@@ -178,17 +178,17 @@ export default function Profile() {
                                 </Link>}
                               </>
                               {/* Send Mail */}
-                              <Link
+                              /<Link
                                 // to={`/send-mail?email=${profile?.email}`}
                                 className="inline-flex justify-center bg-indigo-900 px-4 py-2 border border-yellow-700 shadow-sm text-sm font-medium rounded-md text-gray-700  hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
                               >
-                                <MailIcon
+                                {/* <MailIcon
                                   className="-ml-1 mr-2 h-5 w-5 text-gray-200"
                                   aria-hidden="true"
                                 />
                                 <span className="text-base mr-2  text-bold text-yellow-500">
                                   Send Message
-                                </span>
+                                </span> */}
                               </Link>
                             </div>
                           </div>

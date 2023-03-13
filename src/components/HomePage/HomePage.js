@@ -54,7 +54,7 @@ const Homepage = () => {
                 Pen down your ideas{" "}
                 <span className="text-yellow-500">By creating a post</span>
               </h2> */}
-               <h1 className='ml-10 max-w-2xl mt-5 mb-12 text-6xl 2xl:text-7xl text-blue-900 font-serif font-heading'>
+               <h1 className='ml-10 max-w-2xl mt-5 mb-12 text-6xl 2xl:text-7xl text-cyan-800 font-serif font-heading'>
                 <strong>
                   <div>Start</div>
                   <div className="ml-10 text-primary">Pen down your ideas{" "}</div>

@@ -441,7 +441,7 @@ const usersSlices = createSlice({
     });
     builder.addCase(registerUserAction.fulfilled, (state, action) => {
       state.loading = false;
-      state.registered = action?.payload;
+      state.registered =action?.payload;
       state.appErr = undefined;
       state.serverErr = undefined;
     });

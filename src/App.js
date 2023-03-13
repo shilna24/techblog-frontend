@@ -24,6 +24,8 @@ import ResetPassword from "./components/Users/PasswordManagement/ResetPassword";
 import ReportedPost from "./components/Posts/ReportedPost";
 import AdminDashboard from "./components/Admin/AdminDashboard";
 
+
+
 function App() {
   return (
     <>
@@ -134,7 +136,8 @@ function App() {
 
           </Route>
 
-          {/* <Route path="*" element={<PageNotFound />} /> */}
+          <Route path="*" element={<PageNotFound />} />
+          
         </Routes>
       </Router>
     </>

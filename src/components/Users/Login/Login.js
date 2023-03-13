@@ -67,7 +67,9 @@ return (
               <div className="px-6 lg:px-12 py-12 lg:py-24 bg-gray-200 shadow-lg rounded-lg">
                 {/* Form */}
                 <form onSubmit={formik.handleSubmit}>
-                  <h3 className="mb-10 text-2xl font-bold font-heading text-center font-serif ">
+                  <h3 className="mb-10 text-2xl font-bold font-heading 
+                  text-cyan-800
+                  text-center font-serif ">
                     {/* Header */}
                     Login Now
                   </h3>
