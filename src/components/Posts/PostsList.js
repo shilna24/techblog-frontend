@@ -1,9 +1,7 @@
 import { useEffect,useState } from "react";
 import { ThumbUpIcon, ThumbDownIcon, EyeIcon } from "@heroicons/react/solid";
-import { FaRegBookmark, FaBookmark, FaFlag, FaRegFlag } from "react-icons/fa";
-import { toast, Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { Link ,Navigate,useNavigate,useParams} from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 import * as DOMPurify from "dompurify";
 import {
   fetchPostsAction,
@@ -37,9 +35,8 @@ export default function PostsList() {
   const post = useSelector(state => state?.post);
 
 
-  const { postLists, loading, appErr, serverErr,likes,disLikes ,pageNumber,
+  const { postLists,appErr, serverErr,likes,disLikes ,
     savedPost,
-    savedList,
     saved,
     deleted,
     reports,} = post;
@@ -64,30 +61,14 @@ export default function PostsList() {
    dispatch(fetchCategoriesAction());
  }, [dispatch]);
 
- const tostAlert = (msg) => {
-  toast.success(msg);
-};
+
 
 return (
   <>
     <section>
     <div class="py-20 bg-gray-200 min-h-screen radius-for-skewed p-10 ">
         <div class="container mx-auto px-4 ">
-          <div className="mb-4 justify-center ">
-            <div className="flex  rounded justify-center">
-              <input
-                onChange={(event) => {
-                  setSearch(event.target.value);
-                }}
-                type="text"
-                className="block w-96 px-4 py-2 text-black-700 bg-white border rounded-md focus:border-gray-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                placeholder="Search..."
-              />
-              {/* <button className="px-4 text-white bg-black hover:bg-gray-500  border-l rounded ">
-                Search
-              </button> */}
-            </div>
-          </div>
+          
           <div class="mb-20 flex flex-wrap items-center">
             <div class="w-full lg:w-1/2  ">
               <span class="text-black-600 font-bold font-serif text-blue-400">
@@ -392,7 +373,7 @@ return (
           </div>
         </div>
       </div>
-      <Toaster position="top-center" reverseOrder={false} />
+    
     </section>
   </>
 );

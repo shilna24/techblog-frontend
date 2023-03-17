@@ -3,10 +3,8 @@ import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Link } from "react-router-dom";
 import {
-  BellIcon,
   MenuIcon,
   XIcon,
-  BookOpenIcon,
 } from "@heroicons/react/outline";
 import { PlusIcon, LogoutIcon } from "@heroicons/react/solid";
 import { useDispatch } from "react-redux";
@@ -16,7 +14,7 @@ const navigation = [
   { name: "Home", href: "/", current: true },
   { name: "Create", href: "/create-post", current: false },
   { name: "Posts", href: "/posts", current: false },
-  { name: "Profile", href: "/users", current: false },
+  
 ];
 
 function classNames(...classes) {
