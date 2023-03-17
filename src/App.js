@@ -23,7 +23,7 @@ import ResetPasswordForm from "./components/Users/PasswordManagement/ResetPasswo
 import ResetPassword from "./components/Users/PasswordManagement/ResetPassword";
 import ReportedPost from "./components/Posts/ReportedPost";
 import AdminDashboard from "./components/Admin/AdminDashboard";
-
+import PageNotFound from "./components/PageNotFound"
 
 
 function App() {
